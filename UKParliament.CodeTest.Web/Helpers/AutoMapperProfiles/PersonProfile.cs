@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using UKParliament.CodeTest.Data.Domain;
 using UKParliament.CodeTest.Services.Models.Person;
 
 namespace UKParliament.CodeTest.Web.Helpers.AutoMapperProfiles
@@ -7,7 +8,9 @@ namespace UKParliament.CodeTest.Web.Helpers.AutoMapperProfiles
     {
         public PersonProfile()
         {
-            CreateMap<PersonProfile, PersonInfo>().ReverseMap();
+            CreateMap<Person, PersonInfo>().ReverseMap();
+            CreateMap<Person, PersonPutModel>().ReverseMap();
+
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UKParliament.CodeTest.Data.Domain;
+using UKParliament.CodeTest.Data.Seed;
 
 namespace UKParliament.CodeTest.Data
 {
@@ -14,9 +15,17 @@ namespace UKParliament.CodeTest.Data
 
         public DbSet<Room> Rooms { get; set; }
 
-        public DbSet<RoomBooking> RoomBookings { get; set; }  
-        
+        public DbSet<RoomBooking> RoomBookings { get; set; }
 
 
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    base.OnModelCreating(modelBuilder);
+
+        //    this.Database.EnsureCreatedAsync();
+
+        //    //PersonSeeder.Run(modelBuilder);
+        //    RoomSeeder.Run(modelBuilder);
+        //}
     }
 }

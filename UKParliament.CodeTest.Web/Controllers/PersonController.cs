@@ -35,22 +35,22 @@ namespace UKParliament.CodeTest.Web.Controllers
             return Ok(response.Data);
         }
 
-        [HttpGet("{search/name}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [ProducesDefaultResponseType]
-        public async Task<ActionResult<List<PersonInfo>>> Get(string name)
-        {
-            var response = await _personService.SearchAsync(name);
+        //[HttpGet("{search/name}")]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status404NotFound)]
+        //[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        //[ProducesDefaultResponseType]
+        //public async Task<ActionResult<List<PersonInfo>>> Get(string name)
+        //{
+        //    var response = await _personService.SearchAsync(name);
 
-            if (response.IsError)
-            {
-                return StatusCode((int)response.ErrorCode, response.ErrorDescription);
-            }
+        //    if (response.IsError)
+        //    {
+        //        return StatusCode((int)response.ErrorCode, response.ErrorDescription);
+        //    }
 
-            return Ok(response.Data);
-        }
+        //    return Ok(response.Data);
+        //}
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -73,9 +73,9 @@ namespace UKParliament.CodeTest.Web.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<PersonInfo>> Put(PersonRequestModel personRequestModel)
+        public async Task<ActionResult<PersonInfo>> Put(PersonPutModel personPutModel)
         {
-            var response = await _personService.PutAsync(personRequestModel);
+            var response = await _personService.PutAsync(personPutModel);
 
             if (response.IsError)
             {

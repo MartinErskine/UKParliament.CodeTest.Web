@@ -1,7 +1,10 @@
 using System.IO;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using UKParliament.CodeTest.Data;
+using UKParliament.CodeTest.Data.Seed;
 
 namespace UKParliament.CodeTest.Web
 {
@@ -21,6 +24,14 @@ namespace UKParliament.CodeTest.Web
                         .UseStartup<Startup>();
                 })
                 .Build();
+
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var context = services.GetRequiredService<RoomBookingsContext>();
+
+                PersonSeeder.Initialise(services);
+            }
 
             host.Run();
         }

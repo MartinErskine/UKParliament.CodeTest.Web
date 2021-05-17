@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
 using System.Reflection;
 using UKParliament.CodeTest.Data;
+using UKParliament.CodeTest.Services;
 using UKParliament.CodeTest.Services.Interfaces;
 using UKParliament.CodeTest.Web.Helpers.AutoMapperProfiles;
 
@@ -36,6 +37,8 @@ namespace UKParliament.CodeTest.Web
             {
                 mc.AddProfile(new PersonProfile());
             }).CreateMapper());
+
+            services.AddScoped<IPersonService, PersonService>();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

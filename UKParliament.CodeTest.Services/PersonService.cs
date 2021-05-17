@@ -91,7 +91,7 @@ namespace UKParliament.CodeTest.Services
         {
             try
             {
-                var person = await _context.People.FirstOrDefaultAsync(f => f.Name == personRequestModel.Name && f.DateOfBirth == personRequestModel.DateOfBirth);
+                var person = await _context.People.AsNoTracking().FirstOrDefaultAsync(f => f.Name == personRequestModel.Name && f.DateOfBirth == personRequestModel.DateOfBirth);
 
                 if (person != null)
                 {
@@ -104,7 +104,7 @@ namespace UKParliament.CodeTest.Services
 
                 var newPerson = _mapper.Map<Person>(personRequestModel);
 
-                _context.People.Add(newPerson);
+                _context.Entry(newPerson).State = EntityState.Added;
 
                 if (await _context.SaveChangesAsync() > 0)
                 {
@@ -131,11 +131,11 @@ namespace UKParliament.CodeTest.Services
             }
         }
 
-        public async Task<ServiceResponse<PersonInfo>> PutAsync(PersonRequestModel personRequestModel)
+        public async Task<ServiceResponse<PersonInfo>> PutAsync(PersonPutModel personPutModel)
         {
             try
             {
-                var person = await _context.People.FirstOrDefaultAsync(f => f.Name == personRequestModel.Name && f.DateOfBirth == personRequestModel.DateOfBirth);
+                var person = await _context.People.AsNoTracking().FirstOrDefaultAsync(f => f.Id == personPutModel.Id);
 
                 if (person == null)
                 {
@@ -146,7 +146,7 @@ namespace UKParliament.CodeTest.Services
                     };
                 }
 
-                var updatedPerson = _mapper.Map<Person>(personRequestModel);
+                var updatedPerson = _mapper.Map<Person>(personPutModel);
 
                 _context.Entry(updatedPerson).State = EntityState.Modified;
 
