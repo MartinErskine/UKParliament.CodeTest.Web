@@ -31,6 +31,8 @@ namespace UKParliament.CodeTest.Web
                 var context = services.GetRequiredService<RoomBookingsContext>();
 
                 PersonSeeder.Initialise(services);
+                RoomSeeder.Initialise(services);
+                RoomBookingSeeder.Initialise(services);
             }
 
             host.Run();

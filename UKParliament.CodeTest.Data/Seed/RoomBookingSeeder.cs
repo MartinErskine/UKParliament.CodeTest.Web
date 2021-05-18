@@ -6,22 +6,20 @@ using UKParliament.CodeTest.Data.Domain;
 
 namespace UKParliament.CodeTest.Data.Seed
 {
-    public static class RoomSeeder
+    public static class RoomBookingSeeder
     {
         public static void Initialise(IServiceProvider serviceProvider)
         {
             using (var context = new RoomBookingsContext(serviceProvider.GetRequiredService<DbContextOptions<RoomBookingsContext>>()))
             {
-                if (context.Rooms.Any())
+                if (context.RoomBookings.Any())
                 {
                     return;
                 }
 
-                context.Rooms.AddRange(
-                    new Room { Id = 1, Name = "Room One" },
-                    new Room { Id = 2, Name = "Room Three" },
-                    new Room { Id = 3, Name = "Room Two" },
-                    new Room { Id = 4, Name = "Room Four" }
+                context.RoomBookings.AddRange(
+                    new RoomBooking { Id = 1, PersonId = 6, RoomId = 2 },
+                    new RoomBooking { Id = 2, PersonId = 4, RoomId = 3 }
                 );
 
                 context.SaveChanges();

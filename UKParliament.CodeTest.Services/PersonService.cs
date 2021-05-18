@@ -175,5 +175,37 @@ namespace UKParliament.CodeTest.Services
                 };
             }
         }
+
+        public async Task<ServiceResponse<string>> DeleteAsync(int id)
+        {
+            try
+            {
+                var roomBookings = await _context.RoomBookings.Include(i => i.Person).FirstOrDefaultAsync(f => f.PersonId == id);
+
+                if (roomBookings != null)
+                {
+                    return new ServiceResponse<string>
+                    {
+                        ErrorCode = HttpStatusCode.Conflict,
+                        ErrorDescription = "Person does not exist"
+                    };
+                }
+
+
+
+
+
+                return null;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return new ServiceResponse<string>
+                {
+                    ErrorCode = HttpStatusCode.InternalServerError,
+                    ErrorDescription = "Internal Server Error"
+                };
+            }
+        }
     }
 }

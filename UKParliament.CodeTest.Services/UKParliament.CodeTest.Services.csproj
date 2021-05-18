@@ -12,8 +12,4 @@
     <ProjectReference Include="..\UKParliament.CodeTest.Data\UKParliament.CodeTest.Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\Room\" />
-  </ItemGroup>
-
 </Project>

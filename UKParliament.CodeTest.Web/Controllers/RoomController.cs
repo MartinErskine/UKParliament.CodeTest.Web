@@ -1,32 +1,32 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using UKParliament.CodeTest.Services.Interfaces;
-using UKParliament.CodeTest.Services.Models.Person;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using UKParliament.CodeTest.Services;
+using UKParliament.CodeTest.Services.Models.Room;
 
 namespace UKParliament.CodeTest.Web.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
-    [Route("[controller]")]
-    [ApiExplorerSettings(GroupName = "PeopleApi")]
-    public class PersonController : ControllerBase
+    [ApiExplorerSettings(GroupName = "RoomsApi")]
+    public class RoomController : ControllerBase
     {
-        private readonly IPersonService _personService;
+        private readonly IRoomService _roomService;
 
-        public PersonController(IPersonService personService)
+        public RoomController(IRoomService roomService)
         {
-            _personService = personService;
+            _roomService = roomService;
         }
 
-        [HttpGet("{personId}")]
+        [HttpGet("{roomId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<PersonInfo>> Get(int personId)
+        public async Task<ActionResult<RoomInfo>> Get(int roomId)
         {
-            var response = await _personService.GetAsync(personId);
+            var response = await _roomService.GetAsync(roomId);
 
             if (response.IsError)
             {
@@ -41,9 +41,9 @@ namespace UKParliament.CodeTest.Web.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<List<PersonInfo>>> Get(string name)
+        public async Task<ActionResult<List<RoomInfo>>> Get(string name)
         {
-            var response = await _personService.SearchAsync(name);
+            var response = await _roomService.SearchAsync(name);
 
             if (response.IsError)
             {
@@ -57,9 +57,9 @@ namespace UKParliament.CodeTest.Web.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<PersonInfo>> PostAsync(PersonRequestModel personRequestModel)
+        public async Task<ActionResult<RoomInfo>> PostAsync(RoomRequestModel roomRequestModel)
         {
-            var response = await _personService.PostAsync(personRequestModel);
+            var response = await _roomService.PostAsync(roomRequestModel);
 
             if (response.IsError)
             {
@@ -74,9 +74,9 @@ namespace UKParliament.CodeTest.Web.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<PersonInfo>> Put(PersonPutModel personPutModel)
+        public async Task<ActionResult<RoomInfo>> Put(RoomPutModel roomPutModel)
         {
-            var response = await _personService.PutAsync(personPutModel);
+            var response = await _roomService.PutAsync(roomPutModel);
 
             if (response.IsError)
             {
@@ -93,7 +93,7 @@ namespace UKParliament.CodeTest.Web.Controllers
         [ProducesDefaultResponseType]
         public async Task Delete()
         {
-            //TODO: Delete if not booked to a Room.
+            //TODO: Delete if no bookings.
         }
     }
 }

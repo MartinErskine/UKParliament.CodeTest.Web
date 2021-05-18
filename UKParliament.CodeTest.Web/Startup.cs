@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
 using System.Reflection;
+using Microsoft.OpenApi.Models;
 using UKParliament.CodeTest.Data;
 using UKParliament.CodeTest.Services;
 using UKParliament.CodeTest.Services.Interfaces;
@@ -31,11 +32,43 @@ namespace UKParliament.CodeTest.Web
 
             services.AddDbContext<RoomBookingsContext>(op => op.UseInMemoryDatabase("RoomBookings"));
 
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(config =>
+            {
+                config.SwaggerDoc(
+                    "PeopleApi",
+                    new OpenApiInfo()
+                    {
+                        Title = "People API",
+                        Version = "1",
+                        Description = "People Operations",
+                        Contact = new OpenApiContact
+                        {
+                            Email = "someone@uk.gov",
+                            Name = "Admin"
+                        }
+                    }
+                );
+
+                config.SwaggerDoc(
+                    "RoomsApi",
+                    new OpenApiInfo()
+                    {
+                        Title = "Rooms API",
+                        Version = "1",
+                        Description = "Rooms Operations",
+                        Contact = new OpenApiContact
+                        {
+                            Email = "someone@uk.gov",
+                            Name = "Admin"
+                        }
+                    }
+                );
+            });
 
             services.AddSingleton(provider => new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new PersonProfile());
+                mc.AddProfile(new RoomProfile());
             }).CreateMapper());
 
             services.AddScoped<IPersonService, PersonService>();
@@ -68,7 +101,9 @@ namespace UKParliament.CodeTest.Web
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                //c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/PeopleApi/swagger.json", "People API");
+                c.SwaggerEndpoint("/swagger/RoomsApi/swagger.json", "Rooms API");
                 c.RoutePrefix = string.Empty;
             });
 
