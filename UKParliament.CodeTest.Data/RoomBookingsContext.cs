@@ -5,6 +5,10 @@ namespace UKParliament.CodeTest.Data
 {
     public class RoomBookingsContext : DbContext
     {
+        public RoomBookingsContext()
+        {
+        }
+
         public RoomBookingsContext(DbContextOptions<RoomBookingsContext> options)
             : base(options)
         {

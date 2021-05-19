@@ -20,7 +20,7 @@ namespace UKParliament.CodeTest.Web.Controllers
             _roomService = roomService;
         }
 
-        [HttpGet("{roomId}")]
+        [HttpGet("{roomId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

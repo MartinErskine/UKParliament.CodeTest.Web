@@ -35,7 +35,7 @@ namespace UKParliament.CodeTest.Services
                 {
                     return new ServiceResponse<PersonModel>
                     {
-                        ErrorCode = HttpStatusCode.Conflict,
+                        ErrorCode = HttpStatusCode.NotFound,
                         ErrorDescription = "Person does not exist"
                     };
                 }
@@ -66,7 +66,7 @@ namespace UKParliament.CodeTest.Services
                 {
                     return new ServiceResponse<List<PersonModel>>
                     {
-                        ErrorCode = HttpStatusCode.Conflict,
+                        ErrorCode = HttpStatusCode.NotFound,
                         ErrorDescription = "Person does not exist"
                     };
                 }
@@ -141,7 +141,7 @@ namespace UKParliament.CodeTest.Services
                 {
                     return new ServiceResponse<PersonModel>
                     {
-                        ErrorCode = HttpStatusCode.Conflict,
+                        ErrorCode = HttpStatusCode.NotFound,
                         ErrorDescription = "Person does not exist"
                     };
                 }
@@ -186,12 +186,13 @@ namespace UKParliament.CodeTest.Services
                 {
                     return new ServiceResponse<string>
                     {
-                        ErrorCode = HttpStatusCode.Conflict,
+                        ErrorCode = HttpStatusCode.NotFound,
                         ErrorDescription = "Person does not exist"
                     };
                 }
 
-
+                //TODO: Check if Person is assigned to any current Bookings.
+                //
 
 
 

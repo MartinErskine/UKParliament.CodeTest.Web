@@ -26,7 +26,7 @@ namespace UKParliament.CodeTest.Web.Controllers
 
             if (response.IsError)
             {
-                return StatusCode((int)response.ErrorCode, response.ErrorDescription);
+                return StatusCode((int) response.ErrorCode, response.ErrorDescription);
             }
 
             return Ok(response.Data);
@@ -38,25 +38,39 @@ namespace UKParliament.CodeTest.Web.Controllers
         {
 
             var response = await _roomService.BookRoomAsync(roomBookingRequestModel);
+            if (response.IsError)
+            {
+                return StatusCode((int) response.ErrorCode, response.ErrorDescription);
+            }
 
-
-
-
-
-            return null;
+            return Ok(response.Data);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<RoomBookingResponseModel>> GetRoom(int id)
         {
             var response = await _roomService.GetRoomBookingAsync(id);
 
             if (response.IsError)
             {
-                return StatusCode((int)response.ErrorCode, response.ErrorDescription);
+                return StatusCode((int) response.ErrorCode, response.ErrorDescription);
             }
 
             return Ok(response.Data);
         }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult<string>> Delete(int id)
+        {
+            var response = await _roomService.DeleteAsync(id);
+
+            if (response.IsError)
+            {
+                return StatusCode((int)response.ErrorCode, response.ErrorDescription);
+            }
+
+            return Ok();
+        }
+
     }
 }

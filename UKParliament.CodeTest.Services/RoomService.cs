@@ -36,7 +36,7 @@ namespace UKParliament.CodeTest.Services
                 {
                     return new ServiceResponse<RoomModel>
                     {
-                        ErrorCode = HttpStatusCode.Conflict,
+                        ErrorCode = HttpStatusCode.NotFound,
                         ErrorDescription = "Room does not exist"
                     };
                 }
@@ -67,7 +67,7 @@ namespace UKParliament.CodeTest.Services
                 {
                     return new ServiceResponse<List<RoomModel>>
                     {
-                        ErrorCode = HttpStatusCode.Conflict,
+                        ErrorCode = HttpStatusCode.NotFound,
                         ErrorDescription = "Room does not exist"
                     };
                 }
@@ -142,7 +142,7 @@ namespace UKParliament.CodeTest.Services
                 {
                     return new ServiceResponse<RoomModel>
                     {
-                        ErrorCode = HttpStatusCode.Conflict,
+                        ErrorCode = HttpStatusCode.NotFound,
                         ErrorDescription = "Room does not exist"
                     };
                 }
@@ -181,17 +181,41 @@ namespace UKParliament.CodeTest.Services
         {
             try
             {
-                var roomBookings = await _context.RoomBookings.Include(i => i.Person).FirstOrDefaultAsync(f => f.PersonId == id);
+                var room = await _context.RoomBookings.Include(i => i.Room).FirstOrDefaultAsync(f => f.RoomId == id);
 
-                if (roomBookings != null)
+                if (room == null)
+                {
+                    return new ServiceResponse<string>
+                    {
+                        ErrorCode = HttpStatusCode.NotFound,
+                        ErrorDescription = "Room does not exist!"
+                    };
+                }
+
+                var checkBookings = await _context.RoomBookings.Where(w => w.Room.Id == id).ToListAsync();
+
+                if (checkBookings.Any())
                 {
                     return new ServiceResponse<string>
                     {
                         ErrorCode = HttpStatusCode.Conflict,
-                        ErrorDescription = "Person does not exist"
+                        ErrorDescription = "Room has Current Bookings, please Move Bookings to another Room!"
                     };
                 }
 
+                //TODO: If the Room has Bookings move them to another Room.
+                // Bus. Req's - Do we alert then have another endpoint to make the move passing in the host room?
+                //              How do we handle clashes on the Host Room?
+                //
+
+                foreach (var booking in checkBookings)
+                {
+                    //TODO: Copy bookings to new host Room
+                    //
+                }
+
+                //TODO: Remove bookings, do we need a Transaction for rollback?
+                //
 
 
 
@@ -273,20 +297,91 @@ namespace UKParliament.CodeTest.Services
 
         public async Task<ServiceResponse<List<RoomBookingInfo>>> BookRoomAsync(RoomBookingRequestModel roomBookingRequestModel) 
         {
+            //TODO: Check if request is in the past.
+            if (roomBookingRequestModel.StartTime < DateTime.Now)
+            {
+                //
+            }
+
+            TimeSpan startTime = new TimeSpan(roomBookingRequestModel.StartTime.Hour, minutes: roomBookingRequestModel.StartTime.Minute, seconds: 0);
+            TimeSpan endTime = new TimeSpan(roomBookingRequestModel.EndTime.Hour, minutes: roomBookingRequestModel.EndTime.Minute, seconds: 0);
+
+            var diff = endTime - startTime;
+            var diffMax = new TimeSpan(1, 0, 0);
+
+            if (diff > diffMax)
+            {
+                return new ServiceResponse<List<RoomBookingInfo>>
+                {
+                    ErrorCode = HttpStatusCode.Conflict,
+                    ErrorDescription = "Room Request Cannot be greater than one hour"
+                };
+            }
+
             try
             {
-                var roomBookings = await _context.RoomBookings.Include(i => i.Room).Where(w => w.RoomId == roomBookingRequestModel.RoomId).ToListAsync();
+                var checkBooking = await _context.RoomBookings.Where(w => w.Room.Id == roomBookingRequestModel.RoomId && w.StartTime >= roomBookingRequestModel.StartTime)
+                    .ToListAsync();
 
+                if (checkBooking.Any())
+                {
+                    return new ServiceResponse<List<RoomBookingInfo>>
+                    {
+                        ErrorCode = HttpStatusCode.Conflict,
+                        ErrorDescription = "Room already booked for some or all of the requested time."
+                    };
+                }
 
+                return new ServiceResponse<List<RoomBookingInfo>>();
 
+            }
+            catch (Exception e)
+            {
+                //TODO: Move to generic method.
+                Debug.WriteLine(e);
+                return new ServiceResponse<List<RoomBookingInfo>>
+                {
+                    ErrorCode = HttpStatusCode.InternalServerError,
+                    ErrorDescription = "Internal Server Error"
+                };
+            }
+        }
 
+        public async Task<ServiceResponse<string>> DeleteRoomBookingAsync(int id)
+        {
+            try
+            {
+                var checkBooking = await _context.RoomBookings.FirstOrDefaultAsync(f => f.Id == id);
 
-                return null;
+                if (checkBooking == null)
+                {
+                    return new ServiceResponse<string>
+                    {
+                        ErrorCode = HttpStatusCode.NotFound,
+                        ErrorDescription = "Booking does not exist!"
+                    };
+                }
+
+                _context.Entry(checkBooking).State = EntityState.Deleted;
+
+                if (await _context.SaveChangesAsync() > 0)
+                {
+                    return new ServiceResponse<string>
+                    {
+                        Data = null
+                    };
+                }
+
+                return new ServiceResponse<string>
+                {
+                    ErrorCode = HttpStatusCode.InternalServerError,
+                    ErrorDescription = "Internal Server Error"
+                };
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e);
-                return new ServiceResponse<List<RoomBookingInfo>>
+                return new ServiceResponse<string>
                 {
                     ErrorCode = HttpStatusCode.InternalServerError,
                     ErrorDescription = "Internal Server Error"
@@ -298,6 +393,9 @@ namespace UKParliament.CodeTest.Services
         {
             try
             {
+                //TODO: Get Available Rooms.
+                //
+                
                 //var availableRooms = await _context.Rooms
 
 
@@ -315,5 +413,6 @@ namespace UKParliament.CodeTest.Services
                 };
             }
         }
+
     }
 }
