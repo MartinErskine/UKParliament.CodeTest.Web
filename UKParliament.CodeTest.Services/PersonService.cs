@@ -25,7 +25,7 @@ namespace UKParliament.CodeTest.Services
             _mapper = mapper;
         }
 
-        public async Task<ServiceResponse<PersonInfo>> GetAsync(int personId)
+        public async Task<ServiceResponse<PersonModel>> GetAsync(int personId)
         {
             try
             {
@@ -33,22 +33,22 @@ namespace UKParliament.CodeTest.Services
 
                 if (person == null)
                 {
-                    return new ServiceResponse<PersonInfo>
+                    return new ServiceResponse<PersonModel>
                     {
                         ErrorCode = HttpStatusCode.Conflict,
                         ErrorDescription = "Person does not exist"
                     };
                 }
 
-                return new ServiceResponse<PersonInfo>
+                return new ServiceResponse<PersonModel>
                 {
-                    Data = _mapper.Map<PersonInfo>(person)
+                    Data = _mapper.Map<PersonModel>(person)
                 };
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e);
-                return new ServiceResponse<PersonInfo>
+                return new ServiceResponse<PersonModel>
                 {
                     ErrorCode = HttpStatusCode.InternalServerError,
                     ErrorDescription = "Internal Server Error"
@@ -56,7 +56,7 @@ namespace UKParliament.CodeTest.Services
             }
         }
 
-        public async Task<ServiceResponse<List<PersonInfo>>> SearchAsync(string name)
+        public async Task<ServiceResponse<List<PersonModel>>> SearchAsync(string name)
         {
             try
             {
@@ -64,22 +64,22 @@ namespace UKParliament.CodeTest.Services
 
                 if (person == null)
                 {
-                    return new ServiceResponse<List<PersonInfo>>
+                    return new ServiceResponse<List<PersonModel>>
                     {
                         ErrorCode = HttpStatusCode.Conflict,
                         ErrorDescription = "Person does not exist"
                     };
                 }
 
-                return new ServiceResponse<List<PersonInfo>>
+                return new ServiceResponse<List<PersonModel>>
                 {
-                    Data = _mapper.Map<List<PersonInfo>>(person)
+                    Data = _mapper.Map<List<PersonModel>>(person)
                 };
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e);
-                return new ServiceResponse<List<PersonInfo>>
+                return new ServiceResponse<List<PersonModel>>
                 {
                     ErrorCode = HttpStatusCode.InternalServerError,
                     ErrorDescription = "Internal Server Error"
@@ -87,7 +87,7 @@ namespace UKParliament.CodeTest.Services
             }
         }
 
-        public async Task<ServiceResponse<PersonInfo>> PostAsync(PersonRequestModel personRequestModel)
+        public async Task<ServiceResponse<PersonModel>> PostAsync(PersonRequestModel personRequestModel)
         {
             try
             {
@@ -95,7 +95,7 @@ namespace UKParliament.CodeTest.Services
 
                 if (person != null)
                 {
-                    return new ServiceResponse<PersonInfo>
+                    return new ServiceResponse<PersonModel>
                     {
                         ErrorCode = HttpStatusCode.Conflict,
                         ErrorDescription = "Person already exists"
@@ -108,13 +108,13 @@ namespace UKParliament.CodeTest.Services
 
                 if (await _context.SaveChangesAsync() > 0)
                 {
-                    return new ServiceResponse<PersonInfo>
+                    return new ServiceResponse<PersonModel>
                     {
-                        Data = _mapper.Map<PersonInfo>(newPerson)
+                        Data = _mapper.Map<PersonModel>(newPerson)
                     };
                 }
 
-                return new ServiceResponse<PersonInfo>
+                return new ServiceResponse<PersonModel>
                 {
                     ErrorCode = HttpStatusCode.InternalServerError,
                     ErrorDescription = "Internal Server Error"
@@ -123,7 +123,7 @@ namespace UKParliament.CodeTest.Services
             catch (Exception e)
             {
                 Debug.WriteLine(e);
-                return new ServiceResponse<PersonInfo>
+                return new ServiceResponse<PersonModel>
                 {
                     ErrorCode = HttpStatusCode.InternalServerError,
                     ErrorDescription = "Internal Server Error"
@@ -131,7 +131,7 @@ namespace UKParliament.CodeTest.Services
             }
         }
 
-        public async Task<ServiceResponse<PersonInfo>> PutAsync(PersonPutModel personPutModel)
+        public async Task<ServiceResponse<PersonModel>> PutAsync(PersonPutModel personPutModel)
         {
             try
             {
@@ -139,7 +139,7 @@ namespace UKParliament.CodeTest.Services
 
                 if (person == null)
                 {
-                    return new ServiceResponse<PersonInfo>
+                    return new ServiceResponse<PersonModel>
                     {
                         ErrorCode = HttpStatusCode.Conflict,
                         ErrorDescription = "Person does not exist"
@@ -152,13 +152,13 @@ namespace UKParliament.CodeTest.Services
 
                 if (await _context.SaveChangesAsync() > 0)
                 {
-                    return new ServiceResponse<PersonInfo>
+                    return new ServiceResponse<PersonModel>
                     {
-                        Data = _mapper.Map<PersonInfo>(updatedPerson)
+                        Data = _mapper.Map<PersonModel>(updatedPerson)
                     };
                 }
 
-                return new ServiceResponse<PersonInfo>
+                return new ServiceResponse<PersonModel>
                 {
                     ErrorCode = HttpStatusCode.InternalServerError,
                     ErrorDescription = "Internal Server Error"
@@ -168,7 +168,7 @@ namespace UKParliament.CodeTest.Services
             catch (Exception e)
             {
                 Debug.WriteLine(e);
-                return new ServiceResponse<PersonInfo>
+                return new ServiceResponse<PersonModel>
                 {
                     ErrorCode = HttpStatusCode.InternalServerError,
                     ErrorDescription = "Internal Server Error"

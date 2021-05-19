@@ -1,3 +1,4 @@
+using System;
 using Autofac;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
 using System.Reflection;
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using UKParliament.CodeTest.Data;
 using UKParliament.CodeTest.Services;
@@ -31,6 +33,10 @@ namespace UKParliament.CodeTest.Web
             services.AddControllers();
 
             services.AddDbContext<RoomBookingsContext>(op => op.UseInMemoryDatabase("RoomBookings"));
+
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddSwaggerGen(config =>
             {
@@ -63,6 +69,12 @@ namespace UKParliament.CodeTest.Web
                         }
                     }
                 );
+
+                config.MapType<TimeSpan>(() => new OpenApiSchema
+                {
+                    Type = "string",
+                    Example = new OpenApiString("00:00:00")
+                });
             });
 
             services.AddSingleton(provider => new MapperConfiguration(mc =>

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UKParliament.CodeTest.Services;
+using UKParliament.CodeTest.Services.Interfaces;
 using UKParliament.CodeTest.Services.Models.Room;
 
 namespace UKParliament.CodeTest.Web.Controllers
@@ -24,7 +25,7 @@ namespace UKParliament.CodeTest.Web.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<RoomInfo>> Get(int roomId)
+        public async Task<ActionResult<RoomModel>> Get(int roomId)
         {
             var response = await _roomService.GetAsync(roomId);
 
@@ -41,7 +42,7 @@ namespace UKParliament.CodeTest.Web.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<List<RoomInfo>>> Get(string name)
+        public async Task<ActionResult<List<RoomModel>>> Get(string name)
         {
             var response = await _roomService.SearchAsync(name);
 
@@ -57,7 +58,7 @@ namespace UKParliament.CodeTest.Web.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<RoomInfo>> PostAsync(RoomRequestModel roomRequestModel)
+        public async Task<ActionResult<RoomModel>> PostAsync(RoomRequestModel roomRequestModel)
         {
             var response = await _roomService.PostAsync(roomRequestModel);
 
@@ -74,7 +75,7 @@ namespace UKParliament.CodeTest.Web.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<RoomInfo>> Put(RoomPutModel roomPutModel)
+        public async Task<ActionResult<RoomModel>> Put(RoomPutModel roomPutModel)
         {
             var response = await _roomService.PutAsync(roomPutModel);
 
@@ -94,6 +95,9 @@ namespace UKParliament.CodeTest.Web.Controllers
         public async Task Delete()
         {
             //TODO: Delete if no bookings.
+            //TODO: If Bookings, shift to another Room.
+            //
+
         }
     }
 }

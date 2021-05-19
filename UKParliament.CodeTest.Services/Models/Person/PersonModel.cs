@@ -1,6 +1,6 @@
 ﻿namespace UKParliament.CodeTest.Services.Models.Person
 {
-    public class PersonInfo
+    public class PersonModel
     {
         public int Id { get; set; }
         

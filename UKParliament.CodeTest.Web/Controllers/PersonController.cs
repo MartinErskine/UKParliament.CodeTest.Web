@@ -24,7 +24,7 @@ namespace UKParliament.CodeTest.Web.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<PersonInfo>> Get(int personId)
+        public async Task<ActionResult<PersonModel>> Get(int personId)
         {
             var response = await _personService.GetAsync(personId);
 
@@ -41,7 +41,7 @@ namespace UKParliament.CodeTest.Web.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<List<PersonInfo>>> Get(string name)
+        public async Task<ActionResult<List<PersonModel>>> Get(string name)
         {
             var response = await _personService.SearchAsync(name);
 
@@ -57,7 +57,7 @@ namespace UKParliament.CodeTest.Web.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<PersonInfo>> PostAsync(PersonRequestModel personRequestModel)
+        public async Task<ActionResult<PersonModel>> PostAsync(PersonRequestModel personRequestModel)
         {
             var response = await _personService.PostAsync(personRequestModel);
 
@@ -74,7 +74,7 @@ namespace UKParliament.CodeTest.Web.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<PersonInfo>> Put(PersonPutModel personPutModel)
+        public async Task<ActionResult<PersonModel>> Put(PersonPutModel personPutModel)
         {
             var response = await _personService.PutAsync(personPutModel);
 
@@ -94,6 +94,7 @@ namespace UKParliament.CodeTest.Web.Controllers
         public async Task Delete()
         {
             //TODO: Delete if not booked to a Room.
+            //
         }
     }
 }

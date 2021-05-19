@@ -26,28 +26,6 @@ namespace UKParliament.CodeTest.Data.Seed
                     new Person { Id = 6, Name = "John Smith", DateOfBirth = new DateTime(1999, 12, 1, 12, 0, 0) }
                 );
 
-                if (context.Rooms.Any())
-                {
-                    return;
-                }
-
-                context.Rooms.AddRange(
-                    new Room { Id = 1, Name = "Room One" },
-                    new Room { Id = 2, Name = "Room Three" },
-                    new Room { Id = 3, Name = "Room Two" },
-                    new Room { Id = 4, Name = "Room Four" }
-                );
-
-                if (context.RoomBookings.Any())
-                {
-                    return;
-                }
-
-                context.RoomBookings.AddRange(
-                    new RoomBooking{Id = 1, PersonId = 6, RoomId = 2 },
-                    new RoomBooking{Id = 2, PersonId = 4, RoomId = 3 }
-                );
-
                 context.SaveChanges();
             }
         }

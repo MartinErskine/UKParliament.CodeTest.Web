@@ -32,7 +32,6 @@ namespace UKParliament.CodeTest.Web
 
                 PersonSeeder.Initialise(services);
                 RoomSeeder.Initialise(services);
-                RoomBookingSeeder.Initialise(services);
             }
 
             host.Run();

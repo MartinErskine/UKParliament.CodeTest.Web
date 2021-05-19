@@ -8,8 +8,9 @@ namespace UKParliament.CodeTest.Web.Helpers.AutoMapperProfiles
     {
         public PersonProfile()
         {
-            CreateMap<Person, PersonInfo>().ReverseMap();
+            CreateMap<Person, PersonModel>().ReverseMap();
             CreateMap<Person, PersonPutModel>().ReverseMap();
+            CreateMap<Person, PersonRequestModel>().ReverseMap();
 
         }
     }
